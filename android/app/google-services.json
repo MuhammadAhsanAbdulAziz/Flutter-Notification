@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1078394059379",
+    "project_id": "catalystapp-677ae",
+    "storage_bucket": "catalystapp-677ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078394059379:android:f106c3ac8e63c1acce4806",
+        "android_client_info": {
+          "package_name": "com.example.catalyst_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDG7wRMjybKeR8orLyZdJpR3yQHQCV7PnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
