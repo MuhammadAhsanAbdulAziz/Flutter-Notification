@@ -31,44 +31,47 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("Test App"),
       ),
-      body:  Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    notificationServices.getDeviceToken().then((value) async {
-                      print(value);
-                      var data = {
-                        // 'to' : '', you can put your static device token of android here and then send notifications from ios
-                        'to': value.toString(),
-                        'priority': 'high',
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  notificationServices.getDeviceToken().then((value) async {
+                    print(value);
+                    var data = {
+                      // 'to' : '', you can put your static device token of android here and then send notifications from ios
+                      'to': value.toString(),
+                      'notification': {
+                        'title': 'Catalyst Test',
+                        'body': 'Flutter Firebase Push Notifications',
+                      },
+                      'android': {
                         'notification': {
-                          'title': 'Catalyst Test',
-                          'body': 'Flutter Firebase Push Notifications',
+                          'notification_count': 23,
                         },
-                        'data': {'type': 'ahsan', 'id': '1'}
-                      };
-                      await http.post(
-                          Uri.parse('https://fcm.googleapis.com/fcm/send'),
-                          body: jsonEncode(data),
-                          headers: {
-                            'Content-Type': 'application/json; charset=UTF-8',
-                            'Authorization':
-                                'key=AAAA-xVLenM:APA91bFG2OOyWyTmO0l5tSW4tDHpvqXF0QTRit06WXGInspre09LVzGhjaQGmue827JxpKEobalN2ocrfDmSdqeRY5eOPKzeo30E4ZWPz4gJAroiJr0SPfOWcnWO4K3k75KNV8G72R1E'
-                          });
-                    });
-                  },
-                  child: Text("Send Notification")),
-              ElevatedButton(
-                  onPressed: () {
-                    throw Exception();
-                  },
-                  child: Text("Throw Exception")),
-            ],
-          ),
+                      },
+                      'data': {'type': 'ahsan', 'id': '1'}
+                    };
+                    await http.post(
+                        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                        body: jsonEncode(data),
+                        headers: {
+                          'Content-Type': 'application/json; charset=UTF-8',
+                          'Authorization':
+                              'key=AAAA-xVLenM:APA91bFG2OOyWyTmO0l5tSW4tDHpvqXF0QTRit06WXGInspre09LVzGhjaQGmue827JxpKEobalN2ocrfDmSdqeRY5eOPKzeo30E4ZWPz4gJAroiJr0SPfOWcnWO4K3k75KNV8G72R1E'
+                        });
+                  });
+                },
+                child: Text("Send Notification")),
+            ElevatedButton(
+                onPressed: () {
+                  throw Exception();
+                },
+                child: Text("Throw Exception")),
+          ],
+        ),
       ),
-      
     );
   }
 }
