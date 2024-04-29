@@ -42,8 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       var data = {
                         // 'to' : '', you can put your static device token of android here and then send notifications from ios
                         'to': value.toString(),
-                        // 'to' : 'dcS2scdMR-uJXkEUSoyty8:APA91bEr5v4FzoTB_toc_V-Uo2Njkcd3_0ygdvDXl0yk0Gj8a5lM0c0NJgg0JVXXSPO2O2dawqn3DNTIQhUeIBLDMFAoUjUvhR__xUWOjNfBz61iaiWBH6f0TmeFQK6f3mUQ4sfUM1n1',
-                        // // 'to' : value.toString(),
                         'priority': 'high',
                         'notification': {
                           'title': 'Catalyst Test',
