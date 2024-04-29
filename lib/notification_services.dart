@@ -39,23 +39,20 @@ class NotficationServices {
     }
   }
 
-    void initLocalNotifications(BuildContext context, RemoteMessage message)async{
-    var androidInitializationSettings = const AndroidInitializationSettings('@mipmap/ic_launcher');
+  void initLocalNotifications(
+      BuildContext context, RemoteMessage message) async {
+    var androidInitializationSettings =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
     var iosInitializationSettings = const DarwinInitializationSettings();
 
     var initializationSetting = InitializationSettings(
-        android: androidInitializationSettings ,
-        iOS: iosInitializationSettings
-    );
+        android: androidInitializationSettings, iOS: iosInitializationSettings);
 
-    await _flutterLocalNotificationsPlugin.initialize(
-        initializationSetting,
-      onDidReceiveNotificationResponse: (payload){
-        handleMessage(context, message);
-      }
-    );
+    await _flutterLocalNotificationsPlugin.initialize(initializationSetting,
+        onDidReceiveNotificationResponse: (payload) {
+      handleMessage(context, message);
+    });
   }
-
 
   void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
@@ -69,64 +66,55 @@ class NotficationServices {
         print('data:${message.data.toString()}');
       }
 
-
-      if(Platform.isAndroid){
+      if (Platform.isIOS) {
+        forgroundMessage();
+      }
+      if (Platform.isAndroid) {
         initLocalNotifications(context, message);
         showNotification(message);
       }
     });
   }
 
-
   // function to show visible notification when app is active
-  Future<void> showNotification(RemoteMessage message)async{
-
+  Future<void> showNotification(RemoteMessage message) async {
     AndroidNotificationChannel channel = AndroidNotificationChannel(
-        message.notification!.android!.channelId.toString(),
-      message.notification!.android!.channelId.toString() ,
-      importance: Importance.max  ,
-      showBadge: true ,
+      message.notification!.android!.channelId.toString(),
+      message.notification!.android!.channelId.toString(),
+      importance: Importance.max,
+      showBadge: true,
       playSound: true,
     );
 
-     AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
-      channel.id.toString(),
-      channel.name.toString() ,
-      channelDescription: 'my channel description',
-      importance: Importance.high,
-      priority: Priority.high ,
-      playSound: true,
-      ticker: 'ticker' ,
-         sound: channel.sound
-    //     sound: RawResourceAndroidNotificationSound('jetsons_doorbell')
-    //  icon: largeIconPath
-    );
+    AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+            channel.id.toString(), channel.name.toString(),
+            channelDescription: 'my channel description',
+            importance: Importance.high,
+            priority: Priority.high,
+            playSound: true,
+            ticker: 'ticker',
+            sound: channel.sound
+            //     sound: RawResourceAndroidNotificationSound('jetsons_doorbell')
+            //  icon: largeIconPath
+            );
 
-    const DarwinNotificationDetails darwinNotificationDetails = DarwinNotificationDetails(
-      presentAlert: true ,
-      presentBadge: true ,
-      presentSound: true
-    ) ;
+    const DarwinNotificationDetails darwinNotificationDetails =
+        DarwinNotificationDetails(
+            presentAlert: true, presentBadge: true, presentSound: true);
 
     NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-      iOS: darwinNotificationDetails
-    );
+        android: androidNotificationDetails, iOS: darwinNotificationDetails);
 
-    Future.delayed(Duration.zero , (){
+    Future.delayed(Duration.zero, () {
       _flutterLocalNotificationsPlugin.show(
-          0,
-          message.notification!.title.toString(),
-          message.notification!.body.toString(),
-          notificationDetails ,
+        0,
+        message.notification!.title.toString(),
+        message.notification!.body.toString(),
+        notificationDetails,
       );
     });
-
   }
-
-
-
-
 
   Future<String> getDeviceToken() async {
     String? token = await messaging.getToken();
@@ -142,13 +130,23 @@ class NotficationServices {
     });
   }
 
-    void handleMessage(BuildContext context, RemoteMessage message) {
-
-    if(message.data['type'] =='ahsan'){
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => MessageScreen(
-            id: message.data['id'] ,
-          )));
+  void handleMessage(BuildContext context, RemoteMessage message) {
+    if (message.data['type'] == 'ahsan') {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MessageScreen(
+                    id: message.data['id'],
+                  )));
     }
+  }
+
+  Future forgroundMessage() async {
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 }
